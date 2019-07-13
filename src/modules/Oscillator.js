@@ -1,10 +1,8 @@
-
 import Tone from 'tone'
 
 const defaults = {
   "type": "sawtooth"
 }
-
 
 export const oscillator = (envelope, opt) => {
   const options = Tone.defaultArg(opt, defaults);

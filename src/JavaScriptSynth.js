@@ -7,6 +7,8 @@ import Tone from 'tone'
 import * as Osc from './modules/Oscillator'
 import * as Amp from './modules/Amplifier'
 import * as Out from './modules/Output'
+import * as Rev from './modules/Reverb'
+import * as N from './modules/Node'
 
 const noteMap = {
   1: "C",2: "C#",3: "D", 4: "D#", 5: "E",6: "F",7: "F#",8: "G",9: "G#",10: "A",11: "A#",12: "B",
@@ -20,11 +22,13 @@ class JavaScriptSynth extends React.Component {
 
     this.amplifier = Amp.amplifier()
     this.oscillator = Osc.oscillator(this.amplifier)
+    this.reverb = Rev.reverb()
     this.output = Out.output()
 
-    this.oscillator.node().chain(this.amplifier.node(), this.output.node())
+    N.chain(this.oscillator, this.amplifier, this.output)
+    N.connect(this.amplifier, this.reverb)
+    N.connect(this.reverb, this.output)
   }
-
 
   keypressed(key, octave) {
     const note = val2note(key, octave)

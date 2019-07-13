@@ -1,4 +1,3 @@
-
 import Tone from 'tone'
 
 const defaults = {
@@ -7,7 +6,6 @@ const defaults = {
     "sustain" : 0.3,
     "release" : 1
 };
-
 
 export const amplifier = (opt) => {
   const options = Tone.defaultArg(opt, defaults);

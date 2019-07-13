@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 import Keyboard from './Keyboard'
-import SynthCore from './SynthCore'
+
+import JavaScriptSynth from './JavaScriptSynth'
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
       </header>
 
       <div>
-        <SynthCore />
+        <JavaScriptSynth />
       </div>
 
 

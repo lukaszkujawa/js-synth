@@ -1,0 +1,61 @@
+.keyboard  {
+  margin: 0 auto;
+  width: 42em;
+}
+
+.keyboard .kw {
+  box-sizing: border-box;
+  border: 1px solid #333;
+  border-right: none;
+  height: 10em;
+  width: 2em;
+  float: left;
+  background: #FFF;
+}
+
+.keyboard .kw:hover {
+  background: #EEE;
+}
+
+.keyboard .kw:last-child {
+  border-right: solid 1px #333;
+}
+
+.keyboard .blacks {
+    position: absolute;
+}
+
+.keyboard .kw:first-child {
+  border-left: none;
+}
+
+.keyboard .octave:first-child .kw {
+  border-left: 1px solid #333;
+}
+
+.keyboard .kb {
+  box-sizing: border-box;
+  border-left: 1px solid #FFF;
+  border-right: 1px solid #FFF;
+  background: #000;
+  height: 6em;
+  width: 2em;
+  float: left;
+
+}
+.keyboard .k1 {
+  margin-left:  1em;
+}
+
+.keyboard .k3 {
+  margin-left: 2em;
+}
+
+.keyboard .kb:hover {
+  background: #333;
+}
+
+.keyboard  .octave {
+  width: 14em;
+  float: left;
+}

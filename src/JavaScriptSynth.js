@@ -8,6 +8,7 @@ import * as Osc from './modules/Oscillator'
 import * as Env from './modules/Envelope'
 import * as Out from './modules/Output'
 import * as Rev from './modules/Reverb'
+import * as Del from './modules/Delay'
 import * as Fil from './modules/Filter'
 import * as Vol from './modules/Volume'
 import * as N from './modules/Node'
@@ -29,13 +30,17 @@ class JavaScriptSynth extends React.Component {
     this.subOscillator = Osc.oscillator(this.amplifier, {"detune": -1200})
 
     this.reverb = Rev.reverb()
+    this.delay = Del.feedbackDelay()
     this.output = Out.output()
 
     N.chain(this.oscillator, this.filter, this.amplifier, this.output)
     N.chain(this.subOscillator, this.amplifier, this.output)
 
     N.connect(this.amplifier, this.reverb)
+    N.connect(this.reverb, this.delay)
+
     N.chain(this.reverb, Vol.volume({"volume": -9}), this.output)
+    N.chain(this.delay, Vol.volume({"volume": -16}), this.output)
 
     this.frequencyEnv.node().connect(this.filter.node().frequency)
     this.onKey = [this.amplifier, this.frequencyEnv, this.oscillator, this.subOscillator]

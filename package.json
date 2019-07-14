@@ -6,7 +6,9 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
-    "tone": "^13.4.9"
+    "tone": "^13.4.9",
+    "react-rotary-knob": "^1.1.5",
+    "react-rotary-knob-skin-pack": "^1.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

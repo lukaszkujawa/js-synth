@@ -1,6 +1,7 @@
 import React from 'react';
 
-import Keyboard from './Keyboard'
+import Keyboard from './ui/Keyboard'
+import RKnob from './ui/RKnob'
 
 import Tone from 'tone'
 
@@ -30,8 +31,11 @@ class JavaScriptSynth extends React.Component {
     this.subOscillator = Osc.oscillator(this.amplifier, {"detune": -1200})
 
     this.reverb = Rev.reverb()
-    this.delay = Del.feedbackDelay()
+    this.delay = Del.feedbackDelay({"delayTime": 0.15})
     this.output = Out.output()
+
+    this.reverbVolume = Vol.volume({"volume": -9})
+    this.delayVolume = Vol.volume({"volume": -16})
 
     N.chain(this.oscillator, this.filter, this.amplifier, this.output)
     N.chain(this.subOscillator, this.amplifier, this.output)
@@ -39,8 +43,8 @@ class JavaScriptSynth extends React.Component {
     N.connect(this.amplifier, this.reverb)
     N.connect(this.reverb, this.delay)
 
-    N.chain(this.reverb, Vol.volume({"volume": -9}), this.output)
-    N.chain(this.delay, Vol.volume({"volume": -16}), this.output)
+    N.chain(this.reverb, this.reverbVolume, this.output)
+    N.chain(this.delay, this.delayVolume, this.output)
 
     this.frequencyEnv.node().connect(this.filter.node().frequency)
     this.onKey = [this.amplifier, this.frequencyEnv, this.oscillator, this.subOscillator]
@@ -57,11 +61,26 @@ class JavaScriptSynth extends React.Component {
     this.onKey.map(node => node.keyreleased(time))
   }
 
+  updateDelayTime(val) {
+    this.delay.node().delayTime.value = val / 100
+  }
+
   render() {
 
       return (
         <div className="synth">
+          <div className="panel">
+            <table>
+              <tr>
+                <td><RKnob value={this.delay.node().delayTime.value * 100} onChange={this.updateDelayTime.bind(this)}/></td>
+                <td><RKnob value={0} /></td>
+                <td><RKnob value={0} /></td>
+                <td><RKnob value={0} /></td>
+              </tr>
+            </table>
+          </div>
           <Keyboard pressed={this.keypressed.bind(this)} released={this.keyreleased.bind(this)} />
+
         </div>
       )
 

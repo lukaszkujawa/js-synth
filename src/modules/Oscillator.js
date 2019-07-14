@@ -1,12 +1,12 @@
 import Tone from 'tone'
 
 const defaults = {
-  "type": "sawtooth"
+  "type": "sine"
 }
 
 export const oscillator = (envelope, opt) => {
   const options = Tone.defaultArg(opt, defaults);
-  const oscillator = new Tone.OmniOscillator(options)
+  const oscillator = new Tone.Oscillator(options)
 
   return {
       node: () => oscillator,

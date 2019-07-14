@@ -5,9 +5,11 @@ import Keyboard from './Keyboard'
 import Tone from 'tone'
 
 import * as Osc from './modules/Oscillator'
-import * as Amp from './modules/Amplifier'
+import * as Env from './modules/Envelope'
 import * as Out from './modules/Output'
 import * as Rev from './modules/Reverb'
+import * as Fil from './modules/Filter'
+import * as Vol from './modules/Volume'
 import * as N from './modules/Node'
 
 const noteMap = {
@@ -20,25 +22,34 @@ class JavaScriptSynth extends React.Component {
   constructor(props) {
     super(props)
 
-    this.amplifier = Amp.amplifier()
-    this.oscillator = Osc.oscillator(this.amplifier)
+    this.amplifier = Env.amplitudeEnvelope({"decay": 2, "sustain": 0.5})
+    this.frequencyEnv = Env.frequencyEnvelope({"baseFrequency": 40, "attack": 0.005, "decay": 0.8, "sustain": 0.0})
+    this.filter = Fil.filter({"Q": 2, "gain": 1.2})
+    this.oscillator = Osc.oscillator(this.amplifier, {"type": "triangle"})
+    this.subOscillator = Osc.oscillator(this.amplifier, {"detune": -1200})
+
     this.reverb = Rev.reverb()
     this.output = Out.output()
 
-    N.chain(this.oscillator, this.amplifier, this.output)
+    N.chain(this.oscillator, this.filter, this.amplifier, this.output)
+    N.chain(this.subOscillator, this.amplifier, this.output)
+
     N.connect(this.amplifier, this.reverb)
-    N.connect(this.reverb, this.output)
+    N.chain(this.reverb, Vol.volume({"volume": -9}), this.output)
+
+    this.frequencyEnv.node().connect(this.filter.node().frequency)
+    this.onKey = [this.amplifier, this.frequencyEnv, this.oscillator, this.subOscillator]
   }
 
   keypressed(key, octave) {
     const note = val2note(key, octave)
     const time = Tone.context.now();
-    [this.amplifier, this.oscillator].map(node => node.keypressed(note, time))
+    this.onKey.map(node => node.keypressed(note, time))
   }
 
   keyreleased(key, octave) {
     const time = Tone.context.now();
-    [this.amplifier, this.oscillator].map(node => node.keyreleased(time))
+    this.onKey.map(node => node.keyreleased(time))
   }
 
   render() {

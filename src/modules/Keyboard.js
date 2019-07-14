@@ -23,7 +23,6 @@ class Keyboard extends React.Component {
   render() {
       return (
         <div className="keyboard">
-          <KeyboardOctave oct="1" pressed={this.keypressed.bind(this)} released={this.keyreleased.bind(this)} />
           <KeyboardOctave oct="2" pressed={this.keypressed.bind(this)} released={this.keyreleased.bind(this)} />
           <KeyboardOctave oct="3" pressed={this.keypressed.bind(this)} released={this.keyreleased.bind(this)} />
           <KeyboardOctave oct="4" pressed={this.keypressed.bind(this)} released={this.keyreleased.bind(this)} />
